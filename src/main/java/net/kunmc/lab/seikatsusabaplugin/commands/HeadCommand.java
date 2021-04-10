@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import net.kunmc.lab.seikatsusabaplugin.SeikatsuSabaPlugin;
 import net.kunmc.lab.seikatsusabaplugin.utils.URLUtils;
 import net.kunmc.lab.seikatsusabaplugin.utils.Utils;
@@ -86,8 +84,10 @@ public class HeadCommand implements CommandExecutor, TabCompleter
             JsonObject obj = (JsonObject) elm;
             if (!obj.get("name").getAsString().equals("textures"))
                 continue;
-            texture = new Gson().fromJson(new String(Base64.getDecoder().decode(obj.get("value").getAsString())),
-                    JsonObject.class);
+            texture = new Gson().fromJson(
+                    new String(Base64.getDecoder().decode(obj.get("value").getAsString())),
+                    JsonObject.class
+            );
             break;
         }
 
@@ -98,18 +98,16 @@ public class HeadCommand implements CommandExecutor, TabCompleter
         }
 
         ItemStack stack = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        meta.displayName(Component.text("プレイヤーの頭"));
 
-        meta.lore(Collections.singletonList(Component.text(ChatColor.DARK_RED + "くびちょんぱ！")));
-        stack.setItemMeta(meta);
         try
         {
             String url = texture.get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString();
             byte[] skin = ("{\"textures\":{\"SKIN\":{\"url\":\"" + url + "\"}}}").getBytes();
 
-            Bukkit.getUnsafe().modifyItemStack(stack,
-                    "{SkullOwner:{Id:\"" + new UUID(uuid.hashCode(), uuid.hashCode()) + "\",Properties:{textures:[{Value:\"" + Base64.getEncoder().encodeToString(skin) + "\"}]}}}");
+            Bukkit.getUnsafe().modifyItemStack(
+                    stack,
+                    "{SkullOwner:{Id:\"" + new UUID(uuid.hashCode(), uuid.hashCode()) + "\",Properties:{textures:[{Value:\"" + Base64.getEncoder().encodeToString(skin) + "\"}]}}}"
+            );
             //profileMethod.invoke(meta, profile);
         }
         catch (Exception e)
@@ -118,7 +116,11 @@ public class HeadCommand implements CommandExecutor, TabCompleter
             getter.sendMessage(ChatColor.RED + "エラーが発生いたしました：" + e.getClass());
             return;
         }
+        SkullMeta meta = (SkullMeta) stack.getItemMeta();
+        meta.displayName(Component.text("プレイヤーの頭"));
 
+        meta.lore(Collections.singletonList(Component.text(ChatColor.DARK_RED + "くびちょんぱ！")));
+        stack.setItemMeta(meta);
         getter.getInventory().addItem(stack);
     }
 

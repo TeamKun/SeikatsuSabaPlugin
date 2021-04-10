@@ -6,7 +6,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-
 public class Utils
 {
 
@@ -42,9 +41,9 @@ public class Utils
         if (args.length < min || args.length > max)
         {
             sender.sendMessage(ChatColor.RED + "エラー：引数の長さがおかしいです！");
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 }

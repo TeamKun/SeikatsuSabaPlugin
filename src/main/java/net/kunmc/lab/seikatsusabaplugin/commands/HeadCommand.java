@@ -24,17 +24,16 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.StringUtil;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class HeadCommand implements CommandExecutor, TabCompleter
-{
+{/*
     private static Method profileMethod;
 
    static {
@@ -47,30 +46,7 @@ public class HeadCommand implements CommandExecutor, TabCompleter
        {
            e.printStackTrace();
        }
-   }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (!Utils.hasPermission(sender, "seikatsu.head") ||
-            !Utils.isPlayer(sender) ||
-            !Utils.invalidLengthMessage(sender, args, 1, 1))
-            return true;
-
-        Player player = (Player) sender;
-
-
-        new BukkitRunnable()
-        {
-            @Override
-            public void run()
-            {
-                getHead(player, args[0]);
-            }
-        }.runTaskAsynchronously(SeikatsuSabaPlugin.getPlugin());
-
-        return true;
-    }
+   }*/
 
     private static void getHead(Player getter, String name)
     {
@@ -92,7 +68,7 @@ public class HeadCommand implements CommandExecutor, TabCompleter
         else
             uuid = target.getUniqueId().toString().replace("-", "");
 
-        String skinResult = URLUtils.getAsString("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
+        String skinResult = URLUtils.getAsString("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
         if (skinResult.startsWith("E: "))
         {
             getter.sendMessage(ChatColor.RED + "エラー：" + skinResult.substring(3));
@@ -103,29 +79,38 @@ public class HeadCommand implements CommandExecutor, TabCompleter
 
         JsonArray properties = object.get("properties").getAsJsonArray();
 
-        String texture = null;
-        String signature = null;
+        JsonObject texture = null;
 
-        for (JsonElement elm: properties)
+        for (JsonElement elm : properties)
         {
             JsonObject obj = (JsonObject) elm;
             if (!obj.get("name").getAsString().equals("textures"))
                 continue;
-            texture = obj.get("value").getAsString();
-            signature = obj.get("signature").getAsString();
+            texture = new Gson().fromJson(new String(Base64.getDecoder().decode(obj.get("value").getAsString())),
+                    JsonObject.class);
             break;
         }
 
+        if (texture == null)
+        {
+            getter.sendMessage(ChatColor.RED + "エラー：プレイヤーが見つかりませんでした！");
+            return;
+        }
+
         ItemStack stack = new ItemStack(Material.PLAYER_HEAD);
-
-        GameProfile profile = new GameProfile(UUID.randomUUID(), uuid);
-
-        profile.getProperties().put("textures", new Property("textures", texture, signature));
-
         SkullMeta meta = (SkullMeta) stack.getItemMeta();
+        meta.displayName(Component.text("プレイヤーの頭"));
+
+        meta.lore(Collections.singletonList(Component.text(ChatColor.DARK_RED + "くびちょんぱ！")));
+        stack.setItemMeta(meta);
         try
         {
-            profileMethod.invoke(meta, profile);
+            String url = texture.get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString();
+            byte[] skin = ("{\"textures\":{\"SKIN\":{\"url\":\"" + url + "\"}}}").getBytes();
+
+            Bukkit.getUnsafe().modifyItemStack(stack,
+                    "{SkullOwner:{Id:\"" + new UUID(uuid.hashCode(), uuid.hashCode()) + "\",Properties:{textures:[{Value:\"" + Base64.getEncoder().encodeToString(skin) + "\"}]}}}");
+            //profileMethod.invoke(meta, profile);
         }
         catch (Exception e)
         {
@@ -134,11 +119,30 @@ public class HeadCommand implements CommandExecutor, TabCompleter
             return;
         }
 
-        meta.displayName(Component.text("プレイヤーの頭"));
-
-        meta.lore(Collections.singletonList(Component.text(ChatColor.DARK_RED + "くびちょんぱ！")));
-        stack.setItemMeta(meta);
         getter.getInventory().addItem(stack);
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (!Utils.hasPermission(sender, "seikatsu.head") ||
+                !Utils.isPlayer(sender) ||
+                !Utils.invalidLengthMessage(sender, args, 1, 1))
+            return true;
+
+        Player player = (Player) sender;
+
+
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                getHead(player, args[0]);
+            }
+        }.runTaskAsynchronously(SeikatsuSabaPlugin.getPlugin());
+
+        return true;
     }
 
     @Override

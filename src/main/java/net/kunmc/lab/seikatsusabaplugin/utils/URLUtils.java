@@ -35,7 +35,6 @@ public class URLUtils
         }
     }
 
-
     public static int fetch(String urlString, String method)
     {
         try

@@ -1,10 +1,7 @@
 package net.kunmc.lab.seikatsusabaplugin.utils;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import javafx.util.Pair;
 import org.apache.commons.io.IOUtils;
 
-import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;

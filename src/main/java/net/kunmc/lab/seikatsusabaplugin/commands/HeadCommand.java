@@ -10,7 +10,6 @@ import net.kunmc.lab.seikatsusabaplugin.SeikatsuSabaPlugin;
 import net.kunmc.lab.seikatsusabaplugin.utils.URLUtils;
 import net.kunmc.lab.seikatsusabaplugin.utils.Utils;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.codec.binary.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.StringUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,13 +35,13 @@ import java.util.stream.Collectors;
 
 public class HeadCommand implements CommandExecutor, TabCompleter
 {
-    private static Field profileField;
+    private static Method profileMethod;
 
    static {
        try
        {
-           profileField = SkullMeta.class.getDeclaredField("profile");
-           profileField.setAccessible(true);
+           profileMethod = SkullMeta.class.getDeclaredMethod("setProfile");
+           profileMethod.setAccessible(true);
        }
        catch (Exception e)
        {
@@ -125,7 +125,7 @@ public class HeadCommand implements CommandExecutor, TabCompleter
         SkullMeta meta = (SkullMeta) stack.getItemMeta();
         try
         {
-            profileField.set(meta, profile);
+            profileMethod.invoke(meta, profile);
         }
         catch (Exception e)
         {

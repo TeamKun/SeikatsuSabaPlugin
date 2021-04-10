@@ -1,0 +1,20 @@
+name: SeikatsuSabaPlugin
+version: ${project.version}
+main: net.kunmc.lab.seikatsusabaplugin.SeikatsuSabaPlugin
+api-version: 1.16
+authors: [Peyang]
+description: 生活鯖用のプラグイン
+website: https://kunmc.net/
+
+commands:
+  head:
+    description: プレイヤの頭をチョンパします！
+
+permissions:
+  seikatsu:
+    description: このプラグインのメインコマンドです。
+    children:
+      head: true
+  seikatsu.head:
+    description: プレイヤの頭をチョンパします！
+    default: true

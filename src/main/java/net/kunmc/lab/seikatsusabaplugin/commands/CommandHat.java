@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class HeadCommand implements CommandExecutor, TabCompleter
+public class CommandHat implements CommandExecutor, TabCompleter
 {/*
     private static Method profileMethod;
 

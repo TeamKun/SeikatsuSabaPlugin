@@ -1,6 +1,6 @@
 package net.kunmc.lab.seikatsusabaplugin;
 
-import net.kunmc.lab.seikatsusabaplugin.commands.HeadCommand;
+import net.kunmc.lab.seikatsusabaplugin.commands.CommandHat;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SeikatsuSabaPlugin extends JavaPlugin
@@ -16,7 +16,7 @@ public final class SeikatsuSabaPlugin extends JavaPlugin
     public void onEnable()
     {
         plugin = this;
-        getCommand("head").setExecutor(new HeadCommand());
-        getCommand("head").setTabCompleter(new HeadCommand());
+        getCommand("head").setExecutor(new CommandHat());
+        getCommand("head").setTabCompleter(new CommandHat());
     }
 }

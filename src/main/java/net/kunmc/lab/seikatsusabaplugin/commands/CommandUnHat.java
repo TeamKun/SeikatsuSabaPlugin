@@ -22,7 +22,7 @@ public class CommandUnHat implements CommandExecutor
 
         passengers.forEach(ent -> {
             ent.leaveVehicle();
-            ent.teleport(Utils.getRandomLocationWithoutFilled(entityLoc, 5), PlayerTeleportEvent.TeleportCause.PLUGIN);
+            ent.teleport(entityLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
             unHatEntities(ent);
         });
     }

@@ -14,9 +14,9 @@ public class HatEventListener implements Listener
     @EventHandler
     public void onDamageEvent(EntityDamageEvent e)
     {
-        if(e.getCause() == EntityDamageEvent.DamageCause.FLY_INTO_WALL)
-        if (e.getEntity().getVehicle() != null && !(e.getEntity().getVehicle() instanceof Minecart || e.getEntity().getVehicle() instanceof Boat))
-            e.setCancelled(true);
+        if (e.getCause() == EntityDamageEvent.DamageCause.FLY_INTO_WALL)
+            if (e.getEntity().getVehicle() != null && !(e.getEntity().getVehicle() instanceof Minecart || e.getEntity().getVehicle() instanceof Boat))
+                e.setCancelled(true);
     }
 
     @EventHandler

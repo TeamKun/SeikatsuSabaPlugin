@@ -1,0 +1,6 @@
+# メンション
+mention:
+  # 接頭辞
+  prefix: "@"
+  # ボスバー表示時間(秒)
+  duration: 5

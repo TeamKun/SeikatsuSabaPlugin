@@ -31,3 +31,9 @@ permissions:
   seikatsu.unhat:
     description: かぶってるエンティティやアイテムを脱ぎます。
     default: true
+  seikatsu.mention.use:
+    description: メンションを飛ばせます。
+    default: true
+  seikatsu.mention.bypass:
+    description: メンションの影響を受けません。
+    default: op

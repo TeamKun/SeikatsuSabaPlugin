@@ -17,6 +17,24 @@ import java.util.stream.Collectors;
 
 public class Utils
 {
+    public static String escapeRegex(String text)
+    {
+        return text.replace("\\", "\\\\")
+                .replace("*", "\\*")
+                .replace("+", "\\+")
+                .replace(".", "\\.")
+                .replace("?", "\\?")
+                .replace("{", "\\{")
+                .replace("}", "\\}")
+                .replace("(", "\\(")
+                .replace(")", "\\)")
+                .replace("[", "\\]")
+                .replace("^", "\\^")
+                .replace("$", "\\$")
+                .replace("-", "\\-")
+                .replace("|", "\\|");
+    }
+
     public static Location getRandomLocationWithoutFilled(Location center, int range)
     {
         Random random = new Random();

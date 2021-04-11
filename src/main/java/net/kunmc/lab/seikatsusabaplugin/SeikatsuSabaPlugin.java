@@ -3,7 +3,10 @@ package net.kunmc.lab.seikatsusabaplugin;
 import net.kunmc.lab.seikatsusabaplugin.commands.CommandHat;
 import net.kunmc.lab.seikatsusabaplugin.commands.CommandHead;
 import net.kunmc.lab.seikatsusabaplugin.commands.CommandUnHat;
+import net.kunmc.lab.seikatsusabaplugin.events.HatEventListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 public final class SeikatsuSabaPlugin extends JavaPlugin
 {
@@ -22,5 +25,6 @@ public final class SeikatsuSabaPlugin extends JavaPlugin
         getCommand("head").setTabCompleter(new CommandHead());
         getCommand("hat").setExecutor(new CommandHat());
         getCommand("unhat").setExecutor(new CommandUnHat());
+        Bukkit.getPluginManager().registerEvents(new HatEventListener(), this);
     }
 }

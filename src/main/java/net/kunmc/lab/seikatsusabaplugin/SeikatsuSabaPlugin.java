@@ -6,7 +6,6 @@ import net.kunmc.lab.seikatsusabaplugin.commands.CommandUnHat;
 import net.kunmc.lab.seikatsusabaplugin.events.HatEventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 public final class SeikatsuSabaPlugin extends JavaPlugin
 {

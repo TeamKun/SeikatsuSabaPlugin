@@ -9,12 +9,25 @@ website: https://kunmc.net/
 commands:
   head:
     description: プレイヤの頭をチョンパします！
-
+  hat:
+    description: プレイヤーやアイテムをかぶります。
+  unhat:
+    description: かぶっているエンティティやアイテムをぬぎます。
 permissions:
-  seikatsu:
-    description: このプラグインのメインコマンドです。
-    children:
-      head: true
   seikatsu.head:
     description: プレイヤの頭をチョンパします！
+    default: true
+  seikatsu.hat:
+    description: プレイヤーやアイテムをかぶります。
+  seikatsu.hat.item:
+    description: アイテムをかぶります。
+    default: true
+  seikatsu.hat.entity:
+    description: エンティティをかぶります。
+    default: true
+  seikatsu.hat.player:
+    description: プレイヤーをかぶります。
+    default: op
+  seikatsu.unhat:
+    description: かぶってるエンティティやアイテムを脱ぎます。
     default: true

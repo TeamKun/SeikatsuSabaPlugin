@@ -2,12 +2,53 @@ package net.kunmc.lab.seikatsusabaplugin.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.BlockIterator;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Utils
 {
+    public static Location getRandomLocationWithoutFilled(Location center, int range)
+    {
+        Random random = new Random();
+        Location loc = center.clone().add(random.nextInt(range), random.nextInt(range), random.nextInt(range));
+        return loc.getWorld().getHighestBlockAt(loc).getLocation();
+    }
+
+    public static LivingEntity getLookingEntity(Player player)
+    {
+        for (Location location : player.getLineOfSight(null, 4).parallelStream().map(Block::getLocation)
+                .collect(Collectors.toCollection(ArrayList::new)))
+            for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5))
+                if (entity instanceof LivingEntity && isLooking((LivingEntity) entity, location))
+                    return (LivingEntity) entity;
+
+        return null;
+    }
+
+    public static boolean isLooking(LivingEntity player, Location location)
+    {
+        BlockIterator it = new BlockIterator(player, 4);
+
+        while (it.hasNext())
+        {
+            final Block block = it.next();
+            if (block.getX() == location.getBlockX() &&
+                    block.getY() == location.getBlockY() &&
+                    block.getZ() == location.getBlockZ())
+                return true;
+        }
+        return false;
+    }
 
     public static boolean hasPermission(CommandSender perm, String permission)
     {

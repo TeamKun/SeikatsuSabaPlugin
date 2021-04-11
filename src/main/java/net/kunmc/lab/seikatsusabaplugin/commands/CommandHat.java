@@ -30,9 +30,10 @@ public class CommandHat implements CommandExecutor
             return;
         }
 
-        if (entity.getVehicle() == null)
+        if (entity.getVehicle() != null)
         {
             player.sendMessage(ChatColor.RED + "エラー：他のエンティティがかぶっているエンティティをかぶることはできません。");
+            return;
         }
 
         setRide(player, entity);

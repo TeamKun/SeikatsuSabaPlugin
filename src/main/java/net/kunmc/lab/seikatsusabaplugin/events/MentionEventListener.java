@@ -41,9 +41,9 @@ public class MentionEventListener implements Listener
     private void b(String text)
     {
         regex = regex.replace("(" + text + "|", "(");
-        regex = regex.replace("(" + text + ")", "");
+        regex = regex.replace("(" + text + ")", "()");
         regex = regex.replace("|" + text + "|", "|");
-        regex = regex.replace("|" + text + ")", "");
+        regex = regex.replace("|" + text + ")", ")");
     }
 
     @EventHandler
